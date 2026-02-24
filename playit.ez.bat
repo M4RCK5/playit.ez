@@ -1,7 +1,6 @@
 @echo off
 
-set "old_workdir=%cd%"
-cd /d "%~dp0"
+pushd "%~dp0"
 
 if /i "%~1"=="-h" call :help & goto :quit
 if /i "%~1"=="-d" call :dash & goto :quit
@@ -20,7 +19,7 @@ call :install
 call :playit
 
 :quit
-cd /d "%old_workdir%"
+popd
 exit /b 0
 
 
@@ -121,4 +120,5 @@ goto :eof
 :dl url output
 md "%~dp2" >nul 2>&1
 powershell -noprofile -command "$progresspreference = 'silentlycontinue'; invoke-webrequest -uri '%~1' -outfile '%~2'" >nul 2>&1
+
 goto :eof
