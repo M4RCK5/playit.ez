@@ -53,10 +53,7 @@ goto :eof
 
 :workdir
 set "workdir=%systemdrive%\playit.ez"
-
-if exist "playit.ez.txt" for /f "delims=" %%a in (playit.ez.txt) do (
-    for /d %%b in (%%~a) do set "workdir=%%~fb\playit.ez"
-)
+echo %~n0 | findstr /i "portable" >nul 2>&1 && set "workdir=%~dp0playit.ez"
 
 md "%workdir%" >nul 2>&1
 cd /d "%workdir%" >nul 2>&1
