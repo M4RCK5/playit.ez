@@ -4,6 +4,7 @@ pushd "%~dp0"
 
 if /i "%~1"=="-h" call :help & goto :quit
 if /i "%~1"=="-d" call :dash & goto :quit
+if /i "%~1"=="-b" call :boot & goto :quit
 if /i "%~1"=="-s" call :stop & goto :quit
 
 call :workdir || goto :quit
@@ -38,6 +39,7 @@ echo.
 echo    -h  Show all launch parameters.
 echo    -d  Open web dashboard.
 echo    -f  Open playit.ez folder.
+echo    -b  Launch after boot.
 echo    -s  Stop playit.ez.
 echo    -r  Reset playit.ez proxy settings.
 echo    -u  Update playit.ez.
@@ -50,10 +52,11 @@ start "" "https://playit.gg/login"
 goto :eof
 
 :workdir
-set "custom_workdir="
 set "workdir=%systemdrive%\playit.ez"
-if exist "playit.ez.txt" set /p custom_workdir=<playit.ez.txt
-if exist "%custom_workdir%" if exist "%custom_workdir%\" set "workdir=%custom_workdir%\playit.ez"
+
+if exist "playit.ez.txt" for /f "delims=" %%a in (playit.ez.txt) do (
+    for /d %%b in (%%~a) do set "workdir=%%~fb\playit.ez"
+)
 
 md "%workdir%" >nul 2>&1
 cd /d "%workdir%" >nul 2>&1
