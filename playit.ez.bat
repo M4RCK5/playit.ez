@@ -32,8 +32,6 @@ exit /b 0
 echo.
 echo playit.ez is a batch script to quickly setup a playit agent.
 echo.
-echo Custom workdir: unquoted path in "playit.ez.txt" next to the script.
-echo.
 echo Launch Parameters:
 echo.
 echo    -h  Show all launch parameters.
