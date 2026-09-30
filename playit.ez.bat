@@ -15,9 +15,9 @@ if /i "%~1"=="-w" call :wipe & goto :quit
 if /i "%~1"=="-r" call :reset & goto :quit
 
 if /i "%~1"=="-u" call :update
-call :install
 
-call :playit
+call :install
+call :start
 
 :quit
 popd
@@ -49,6 +49,24 @@ goto :eof
 
 :dash
 start "" "https://playit.gg/login"
+goto :eof
+
+:boot
+set "startup=%appdata%\Microsoft\Windows\Start Menu\Programs\Startup\playit.ez-shortcut.bat"
+
+if exist "%startup%" (
+	del /f /q "%startup%" >nul 2>&1
+	echo.
+	echo Auto-start disabled.
+) else (
+	(
+		echo @echo off
+		echo start "" "%~f0" ^>nul 2^>^&1
+		echo exit /b 0
+	)>"%startup%"
+	echo.
+	echo Auto-start enabled.
+)
 goto :eof
 
 :workdir
@@ -106,7 +124,7 @@ if not exist "playit.exe" (
 )
 goto :eof
 
-:playit
+:start
 if exist "playit.exe" (
 	start "playit.ez" /min "playit.exe" --secret_path ".\playit.toml" start
 )
@@ -120,5 +138,4 @@ goto :eof
 :dl url output
 md "%~dp2" >nul 2>&1
 powershell -noprofile -command "$progresspreference = 'silentlycontinue'; invoke-webrequest -uri '%~1' -outfile '%~2'" >nul 2>&1
-
 goto :eof
