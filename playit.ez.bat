@@ -8,7 +8,7 @@ if /i "%~1"=="-b" call :boot & goto :quit
 if /i "%~1"=="-s" call :stop & goto :quit
 
 call :workdir || goto :quit
-if /i "%~1"=="-f" start "" "%workdir%" & goto :quit
+if /i "%~1"=="-f" start "" explorer.exe "%workdir%" & goto :quit
 
 call :stop
 if /i "%~1"=="-w" call :wipe & goto :quit
